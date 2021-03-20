@@ -16,7 +16,7 @@ refresh webpage dan cari item `/`
 
 ![forward slash](images/forward_slash.png)
 
-klik item dan klik kanan pada header "cookie" didalam "Request headers"
+klik item lalu klik kanan pada header "cookie" didalam "Request headers"
 
 ![copy header](images/copy_header.png)
 
