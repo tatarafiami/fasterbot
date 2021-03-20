@@ -12,7 +12,7 @@ tekan F12 lalu masuk tab network.
 
 ![tab network](images/tab_network.png)
 
-refresh webpage dan cari item yang seperti berikut: `/`
+refresh webpage dan cari item `/`
 
 ![forward slash](images/forward_slash.png)
 
