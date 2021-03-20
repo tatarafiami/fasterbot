@@ -20,7 +20,7 @@ klik item lalu klik kanan pada header "cookie" didalam "Request headers"
 
 ![copy header](images/copy_header.png)
 
-lalu pilih `copy value`.
+pilih `copy value`.
 
 edit cookie.txt lalu paste dan save!
 
