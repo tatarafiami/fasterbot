@@ -25,3 +25,8 @@ lalu pilih `copy value`.
 edit cookie.txt lalu paste dan save!
 
 selesai/sudah siap login
+
+jalankan scriptnya dengan perintah berikut
+```
+python main.py
+```
