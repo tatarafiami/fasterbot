@@ -49,7 +49,7 @@ class User:
         data = resp.json()
         if len(data) == 0:
             raise Exception("failed to login, invalid cookie")
-        csrf_token = ""
+        csrf_token = None
         for cookie1 in cookie.split(';'):
             key_value = cookie1.split('=')
             if key_value[0].strip() == "csrftoken":
