@@ -22,10 +22,15 @@ class Bot:
             - https://shopee.co.id/product/xxxx/xxxx
             - https://shopee.co.id/Item-Name.xxxx.xxxx
         """
-        match = search(r"(?:.*\.(\d+)\.(\d+))|(?:.*/(\d+)/(\d+).*?)", url)
+        # https://shopee.co.id/product/xxxx/xxxx
+        match = search(r".*/(?P<shopid>\d+)/(?P<itemid>\d+).*?", url)
+        if match is not None:
+            return self.fetch_item(int(match.group("itemid")), int(match.group("shopid")))
+
+        # https://shopee.co.id/Item-Name.xxxx.xxxx
+        match = search(r".*\.(?P<shopid>\d+)\.(?P<itemid>\d+)", url)
         if match is None:
             raise ValueError("unexpected url")
-
         return self.fetch_item(int(match.group(2)), int(match.group(1)))
 
     def fetch_item(self, item_id: int, shop_id: int) -> Item:
