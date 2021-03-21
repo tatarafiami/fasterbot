@@ -15,7 +15,14 @@ class Bot:
         self.user = user
 
     def fetch_item_from_url(self, url: str) -> Item:
-        match = search(r".*\.(\d+)\.(\d+)", url)
+        """
+                :param url: the item url
+                :return: Item object
+                the url will definitely be one of these:
+                    - https://shopee.co.id/product/xxxx/xxxx
+                    - https://shopee.co.id/Item-Name.xxxx.xxxx
+                """
+        match = search(r"(?:.*\.(\d+)\.(\d+))|(?:.*/(\d+)/(\d+).*?)", url)
         if match is None:
             raise ValueError("unexpected url")
 
