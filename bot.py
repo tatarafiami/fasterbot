@@ -270,6 +270,12 @@ class Bot:
         )
 
     def checkout(self, payment: PaymentInfo, item: Item, model_index: int):
+        """
+        :param payment: payment method like COD/Alfamart
+        :param item: the item to checkout
+        :param model_index: selected model
+        checkout an item that has been added to cart
+        """
         data = self.__checkout_get(payment, item, model_index)
         resp = requests.post(
             url="https://shopee.co.id/api/v2/checkout/place_order",
@@ -305,10 +311,20 @@ class Bot:
             raise Exception("failed to checkout")
 
     def buy(self, item: Item, model_index: int, payment: PaymentInfo):
+        """
+        :param item: the item to buy
+        :param model_index: selected model
+        :param payment: payment method
+        just another way to add item to cart and checkout
+        """
         self.add_to_cart(item, model_index)
         self.checkout(payment, item, model_index)
 
     def remove_item_from_cart(self, cart_item: CartItem):
+        """
+        :param cart_item: cart item to be removed
+        remove item from cart
+        """
         resp = requests.post(
             url="https://shopee.co.id/api/v4/cart/update",
             headers={
