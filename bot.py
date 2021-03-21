@@ -31,7 +31,7 @@ class Bot:
         match = search(r".*\.(?P<shopid>\d+)\.(?P<itemid>\d+)", url)
         if match is None:
             raise ValueError("unexpected url")
-        return self.fetch_item(int(match.group(2)), int(match.group(1)))
+        return self.fetch_item(int(match.group("itemid")), int(match.group("shopid")))
 
     def fetch_item(self, item_id: int, shop_id: int) -> Item:
         resp = requests.get(
