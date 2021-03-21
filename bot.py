@@ -250,6 +250,7 @@ class Bot:
         )
 
         if not resp.ok:
+            print(resp.status_code)
             print(resp.text)
             raise Exception("failed to get checkout info")
         data = resp.json()
