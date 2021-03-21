@@ -44,13 +44,6 @@ class AddOnDealInfo:
 
 
 @dataclass
-class TierVariationInfo:
-    name: str
-    options: list
-    properties: list
-
-
-@dataclass
 class Item:
     item_id: int
     shop_id: int
