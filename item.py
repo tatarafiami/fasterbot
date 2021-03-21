@@ -18,19 +18,14 @@ class Model:
 
 @dataclass
 class FlashSaleInfo:
-    discount: str
     end_time: int
-    flash_catid: int
     flash_sale_stock: int
-    hidden_price_display: str
     item_id: int
     model_ids: list
     name: str
     price: int
     price_before_discount: int
-    promo_name: str
     promotion_id: int
-    raw_discount: int
     shop_id: int
     start_time: int
     stock: int
