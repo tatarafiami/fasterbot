@@ -1,6 +1,7 @@
 from bot import Bot
 from user import User
 from checkoutdata import PaymentInfo, PaymentChannel, PaymentChannelOptionInfo
+from datetime import datetime
 
 
 print("Mengambil informasi user...", end='\r')
@@ -58,6 +59,7 @@ print("Menunggu Flash Sale tiba...")
 while not item.is_flash_sale:
     item = bot.fetch_item(item.item_id, item.shop_id)
 print("Flash Sale telah tiba")
+start = datetime.now()
 print("Menambah item ke cart...")
 bot.add_to_cart(item, selected_model)
 print("Checkout item...")
@@ -65,4 +67,6 @@ bot.checkout(PaymentInfo(
     channel=selected_payment_channel,
     option_info=selected_option_info
 ), item, selected_model)
+final = datetime.now() - start
+print("item berhasil dibeli dalam waktu", final.seconds, "detik", final.microseconds, "milis")
 print("Sukses")
