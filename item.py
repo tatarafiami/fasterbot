@@ -33,9 +33,9 @@ class FlashSaleInfo:
 
 @dataclass
 class AddOnDealInfo:
-    add_on_deal_id: int = 0
-    add_on_deal_label: str = ""
-    sub_type: int = 0
+    add_on_deal_id: int = None
+    add_on_deal_label: str = None
+    sub_type: int = None
 
 
 @dataclass
