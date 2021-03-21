@@ -11,9 +11,8 @@ print("Welcome", user.name, ' ' * 10)
 print()
 
 print("Masukan url barang yang akan dibeli")
-url = input("url: ")
 bot = Bot(user)
-item = bot.fetch_item_from_url(url)
+item = bot.fetch_item_from_url(input("url: "))
 
 print("-" * 32)
 print("Nama:", item.name)
@@ -57,7 +56,7 @@ input("Catatan: Tunggu 1 menit sebelum Flash Sale tiba, lalu tekan Enter")
 
 print("Menunggu Flash Sale tiba...")
 while not item.is_flash_sale:
-    item = bot.fetch_item_from_url(url)
+    item = bot.fetch_item(item.item_id, item.shop_id)
 print("Flash Sale telah tiba")
 print("Menambah item ke cart...")
 bot.add_to_cart(item, selected_model)
