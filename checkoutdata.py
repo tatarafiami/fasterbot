@@ -7,6 +7,7 @@ class PaymentChannel(Enum):
     INDOMART_ISAKU = 8003001
     AKULAKU = 8000700
     TRANSFER_BANK = 8005200
+    COD_BAYAR_DI_TEMPAT = 89000
 
 
 class PaymentChannelOptionInfo(Enum):
