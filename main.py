@@ -2,45 +2,57 @@ from bot import Bot
 from user import User
 from checkoutdata import PaymentInfo, PaymentChannel, PaymentChannelOptionInfo
 from datetime import datetime
+from colorama import Fore, Style, init
+import os
 
 
-print("Mengambil informasi user...", end='\r')
+init()
+INFO = Fore.LIGHTBLUE_EX + "[*]" + Fore.BLUE
+INPUT = Fore.LIGHTGREEN_EX + "[?]" + Fore.GREEN
+PROMPT = Fore.LIGHTRED_EX + "[!]" + Fore.RED
+if os.name.lower() == "nt":
+    os.system("cls")
+else:
+    os.system("clear")
+print(INFO, "Mengambil informasi user...", end='\r')
 cookie = open("cookie.txt", 'r')
 user = User.login(cookie.read())
 cookie.close()
-print("Welcome", user.name, ' ' * 10)
+print(INFO, "Welcome", user.name, ' ' * 10)
 print()
 
-print("Masukan url barang yang akan dibeli")
+print(INFO, "Masukan url barang yang akan dibeli")
 bot = Bot(user)
-item = bot.fetch_item_from_url(input("url: "))
+item = bot.fetch_item_from_url(input(INPUT + " url: "))
 
-print("-" * 32)
-print("Nama:", item.name)
-print("Harga:", item.get_price(item.price))
-print("Brand:", item.brand)
-print("Lokasi Toko:", item.shop_location)
-print("-" * 32)
+print(Fore.RESET, "-" * 32)
+print(Fore.LIGHTBLUE_EX, "Nama:", Fore.GREEN, item.name)
+print(Fore.LIGHTBLUE_EX, "Harga:", Fore.GREEN, item.get_price(item.price))
+print(Fore.LIGHTBLUE_EX, "Brand:", Fore.GREEN, item.brand)
+print(Fore.LIGHTBLUE_EX, "Lokasi Toko:", Fore.GREEN, item.shop_location)
+print(Fore.RESET, "-" * 32)
 print()
 
 selected_model = 0
 if len(item.models) > 1:
-    print("Pilih model")
-    print("-" * 32)
+    print(INFO, "Pilih model")
+    print(Fore.RESET, "-" * 32)
     for index, model in enumerate(item.models):
-        print(str(index) + '.', model.name)
-        print('\t', "Harga:", item.get_price(model.price))
-        print('\t', "Stok:", model.stock)
-        print('\t', "ID Model:", model.model_id)
-        print("-" * 32)
+        print(Fore.GREEN + '[' + str(index) + ']' + Fore.BLUE, model.name)
+        print('\t', Fore.LIGHTBLUE_EX, "Harga:", Fore.GREEN, item.get_price(model.price))
+        print('\t', Fore.LIGHTBLUE_EX, "Stok:", Fore.GREEN, model.stock)
+        print('\t', Fore.LIGHTBLUE_EX, "ID Model:", Fore.GREEN, model.model_id)
+        print(Fore.RESET, "-" * 32)
     print()
-    selected_model = int(input("Pilihan: "))
+    selected_model = int(input(INPUT + " Pilihan: "))
+    print()
 
-print("Pilih metode pembayaran")
+print(INFO, "Pilih metode pembayaran")
 payment_channels = dict(enumerate(PaymentChannel))
 for index, channel in payment_channels.items():
-    print(str(index) + '.', channel.name)
-selected_payment_channel = payment_channels[int(input("Pilihan: "))]
+    print(Fore.GREEN + '[' + str(index) + ']' + Fore.BLUE, channel.name)
+print()
+selected_payment_channel = payment_channels[int(input(INPUT + " Pilihan: "))]
 print()
 
 selected_option_info = PaymentChannelOptionInfo.NONE
@@ -51,22 +63,23 @@ if selected_payment_channel is PaymentChannel.TRANSFER_BANK or \
                         PaymentChannel.AKULAKU else 7]))
     for index, option_info in options_info.items():
         print(str(index) + '.', option_info.name)
-    selected_option_info = options_info[int(input("Pilihan: "))]
+    selected_option_info = options_info[int(input(INPUT + " Pilihan: "))]
 
-input("Catatan: Tunggu 1 menit sebelum Flash Sale tiba, lalu tekan Enter")
+input(PROMPT + " Tunggu 1 menit sebelum Flash Sale tiba, lalu tekan Enter")
 
-print("Menunggu Flash Sale tiba...")
+print(INFO, "Menunggu Flash Sale tiba...")
 while not item.is_flash_sale:
     item = bot.fetch_item(item.item_id, item.shop_id)
-print("Flash Sale telah tiba")
+print(INFO, "Flash Sale telah tiba")
 start = datetime.now()
-print("Menambah item ke cart...")
+print(INFO, "Menambah item ke cart...")
 bot.add_to_cart(item, selected_model)
-print("Checkout item...")
+print(INFO, "Checkout item...")
 bot.checkout(PaymentInfo(
     channel=selected_payment_channel,
     option_info=selected_option_info
 ), item, selected_model)
 final = datetime.now() - start
-print("item berhasil dibeli dalam waktu", final.seconds, "detik", final.microseconds, "milis")
-print("Sukses")
+print(INFO, "Item berhasil dibeli dalam waktu", Fore.YELLOW, final.seconds, "detik", final.microseconds // 1000,
+      "milis")
+print(Fore.GREEN + "[*]", "Sukses")
