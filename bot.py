@@ -92,7 +92,7 @@ class Bot:
             is_flash_sale=item_data["flash_sale"] is not None
         )
 
-    def add_to_cart(self, item: Item, model_index: int):
+    def add_to_cart(self, item: Item, model_index: int) -> CartItem:
         if not item.models[model_index].is_available():
             raise Exception("out of stock")
         resp = requests.post(
@@ -117,45 +117,22 @@ class Bot:
                 "update_checkout_only": False
             })
         )
-        error = resp.json()['error']
-        if error != 0:
-            print("modelid:", item.models[0].model_id)
-            print(resp.text)
-            raise Exception(f"failed to add to cart {error}")
-
-    def fetch_cart_item(self, item: Item) -> CartItem:
-        resp = requests.post(
-            url="https://shopee.co.id/api/v4/cart/mini",
-            headers={
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-                "Cookie": self.user.cookie,
-                "if-none-match-": "*",
-                "Referer": "https://shopee.co.id/",
-                "User-Agent": self.user.USER_AGENT,
-                "X-Csrftoken": self.user.csrf_token
-            }
-        )
         data = resp.json()
         if data["error"] != 0:
+            print("modelid:", item.models[0].model_id)
             print(resp.text)
-            raise Exception("failed to fetch cart item")
-        for cart_item in data["data"]["recent_cart_item_details"]:
-            if cart_item["itemid"] == item.item_id:
-                return CartItem(
-                    add_on_deal_id=cart_item["add_on_deal_id"],
-                    item_group_id=cart_item["item_group_id"],
-                    item_id=cart_item["itemid"],
-                    model_name=cart_item["model_name"],
-                    model_id=cart_item["modelid"],
-                    name=cart_item["name"],
-                    price=cart_item["price"],
-                    shop_id=cart_item["shopid"],
-                    stock=cart_item["stock"]
-                )
+            raise Exception(f"failed to add to cart {data['error']}")
+        data = data["data"]["cart_item"]
+        return CartItem(
+            add_on_deal_id=item.add_on_deal_info.add_on_deal_id,
+            item_group_id=data["item_group_id"] if data["item_group_id"] != 0 else None,
+            item_id=data["itemid"],
+            model_id=data["modelid"],
+            price=data["price"],
+            shop_id=item.shop_id
+        )
 
-    def __checkout_get(self, payment: PaymentInfo, item: Item, model_index: int) -> CheckoutData:
-        item_group_id = self.fetch_cart_item(item).item_group_id
+    def __checkout_get(self, payment: PaymentInfo, item: CartItem) -> CheckoutData:
         resp = requests.post(
             url="https://shopee.co.id/api/v2/checkout/get",
             headers={
@@ -167,7 +144,7 @@ class Bot:
                 "X-Csrftoken": self.user.csrf_token,
                 "if-none-match-": "*"
             },
-            # TODO: Implement all original data
+            # TODO: Implement data
             data=dumps({
                 "cart_type": 0,
                 "client_id": 0,
@@ -226,11 +203,11 @@ class Bot:
                         "tax_address": ""
                     },
                     "items": [{
-                        "add_on_deal_id": item.add_on_deal_info.add_on_deal_id,
+                        "add_on_deal_id": item.add_on_deal_id,
                         "is_add_on_sub_item": False,
-                        "item_group_id": item_group_id,
+                        "item_group_id": item.item_group_id,
                         "itemid": item.item_id,
-                        "modelid": item.models[model_index].model_id,
+                        "modelid": item.model_id,
                         "quantity": 1
                     }],
                     "logistics": {
@@ -270,14 +247,14 @@ class Bot:
             timestamp=data["timestamp"]
         )
 
-    def checkout(self, payment: PaymentInfo, item: Item, model_index: int):
+    def checkout(self, payment: PaymentInfo, item: CartItem):
         """
         :param payment: payment method like COD/Alfamart
         :param item: the item to checkout
         :param model_index: selected model
         checkout an item that has been added to cart
         """
-        data = self.__checkout_get(payment, item, model_index)
+        data = self.__checkout_get(payment, item)
         resp = requests.post(
             url="https://shopee.co.id/api/v2/checkout/place_order",
             headers={
