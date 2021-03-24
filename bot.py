@@ -125,7 +125,7 @@ class Bot:
         data = data["data"]["cart_item"]
         return CartItem(
             add_on_deal_id=item.add_on_deal_info.add_on_deal_id,
-            item_group_id=data["item_group_id"] if data["item_group_id"] != 0 else None,
+            item_group_id=str(data["item_group_id"]) if data["item_group_id"] != 0 else None,
             item_id=data["itemid"],
             model_id=data["modelid"],
             price=data["price"],
@@ -205,7 +205,7 @@ class Bot:
                     "items": [{
                         "add_on_deal_id": item.add_on_deal_id,
                         "is_add_on_sub_item": False,
-                        "item_group_id": str(item.item_group_id),
+                        "item_group_id": item.item_group_id,
                         "itemid": item.item_id,
                         "modelid": item.model_id,
                         "quantity": 1
