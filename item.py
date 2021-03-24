@@ -67,9 +67,6 @@ class CartItem:
     add_on_deal_id: int
     item_group_id: str
     item_id: int
-    model_name: str
     model_id: int
-    name: str
     price: int
     shop_id: int
-    stock: int
