@@ -73,12 +73,12 @@ while not item.is_flash_sale:
 print(INFO, "Flash Sale telah tiba")
 start = datetime.now()
 print(INFO, "Menambah item ke cart...")
-bot.add_to_cart(item, selected_model)
+cart_item = bot.add_to_cart(item, selected_model)
 print(INFO, "Checkout item...")
 bot.checkout(PaymentInfo(
     channel=selected_payment_channel,
     option_info=selected_option_info
-), item, selected_model)
+), cart_item)
 final = datetime.now() - start
 print(INFO, "Item berhasil dibeli dalam waktu", Fore.YELLOW, final.seconds, "detik", final.microseconds // 1000,
       "milis")
