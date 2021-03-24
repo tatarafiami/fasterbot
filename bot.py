@@ -205,7 +205,7 @@ class Bot:
                     "items": [{
                         "add_on_deal_id": item.add_on_deal_id,
                         "is_add_on_sub_item": False,
-                        "item_group_id": item.item_group_id,
+                        "item_group_id": str(item.item_group_id),
                         "itemid": item.item_id,
                         "modelid": item.model_id,
                         "quantity": 1
