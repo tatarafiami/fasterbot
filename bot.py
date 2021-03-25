@@ -251,7 +251,6 @@ class Bot:
         """
         :param payment: payment method like COD/Alfamart
         :param item: the item to checkout
-        :param model_index: selected model
         checkout an item that has been added to cart
         """
         data = self.__checkout_get(payment, item)
