@@ -286,6 +286,11 @@ class Bot:
         if "error" in resp.json():
             print(resp.text)
             raise Exception("failed to checkout")
+        elif resp.status_code == 406:
+            print(resp.text)
+            raise Exception("response not acceptable, maybe the item has run out")
+        elif not resp.ok:
+            raise Exception(f"failed to checkout, response not ok: {resp.status_code}")
 
     def buy(self, item: Item, model_index: int, payment: PaymentInfo):
         """
