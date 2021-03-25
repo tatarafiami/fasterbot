@@ -295,8 +295,8 @@ class Bot:
         :param payment: payment method
         just another way to add item to cart and checkout
         """
-        self.add_to_cart(item, model_index)
-        self.checkout(payment, item, model_index)
+        cart_item = self.add_to_cart(item, model_index)
+        self.checkout(payment, cart_item)
 
     def remove_item_from_cart(self, cart_item: CartItem):
         """
