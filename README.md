@@ -3,9 +3,9 @@
 
 Download python di https://www.python.org/downloads/
 # Setup
-Install modul `requests` dengan perintah berikut
+Install modul `requests` dan `colorama` dengan perintah berikut
 ```sh
-pip install requests
+pip install requests colorama
 ```
 jika sudah, buka chrome dan buka https://shopee.co.id/ lalu login.
 tekan F12 lalu masuk tab network.
