@@ -14,6 +14,17 @@ class Bot:
     def __init__(self, user: User):
         self.user = user
 
+    def __default_headers(self) -> dict:
+        return {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Cookie": self.user.cookie,
+                "Referer": "https://shopee.co.id/",
+                "User-Agent": self.user.USER_AGENT,
+                "X-Csrftoken": self.user.csrf_token,
+                "if-none-match-": "*"
+            }
+
     def fetch_item_from_url(self, url: str) -> Item:
         """
         :param url: the item url
@@ -39,14 +50,7 @@ class Bot:
                 "itemid": item_id,
                 "shopid": shop_id
             }),
-            headers={
-                "Host": "shopee.co.id",
-                "Accept": "*/*",
-                "User-Agent": self.user.USER_AGENT,
-                "Referer": "https://shopee.co.id/",
-                "Cookie": self.user.cookie,
-                "if-none-match-": "*"
-            }
+            headers=self.__default_headers()
         )
         item_data = resp.json()["item"]
         if item_data is None:
@@ -95,14 +99,7 @@ class Bot:
             raise Exception("out of stock")
         resp = requests.post(
             url="https://shopee.co.id/api/v2/cart/add_to_cart",
-            headers={
-                "Accept": "application/json",
-                "Referer": "https://shopee.co.id/",
-                "Cookie": self.user.cookie,
-                "User-Agent": self.user.USER_AGENT,
-                "X-Csrftoken": self.user.csrf_token,
-                "Content-Type": "application/json"
-            },
+            headers=self.__default_headers(),
             data=dumps({
                 "checkout": True,
                 "client_source": 1,
@@ -133,15 +130,7 @@ class Bot:
     def __checkout_get(self, payment: PaymentInfo, item: CartItem) -> CheckoutData:
         resp = requests.post(
             url="https://shopee.co.id/api/v2/checkout/get",
-            headers={
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-                "Cookie": self.user.cookie,
-                "User-Agent": self.user.USER_AGENT,
-                "Referer": "https://shopee.co.id/",
-                "X-Csrftoken": self.user.csrf_token,
-                "if-none-match-": "*"
-            },
+            headers=self.__default_headers(),
             # TODO: Implement data
             data=dumps({
                 "cart_type": 0,
@@ -254,15 +243,7 @@ class Bot:
         data = self.__checkout_get(payment, item)
         resp = requests.post(
             url="https://shopee.co.id/api/v2/checkout/place_order",
-            headers={
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-                "Cookie": self.user.cookie,
-                "Referer": "https://shopee.co.id/",
-                "User-Agent": self.user.USER_AGENT,
-                "X-Csrftoken": self.user.csrf_token,
-                "if-none-match-": "*"
-            },
+            headers=self.__default_headers(),
             data=dumps({
                 "status": 200,
                 "headers": {},
@@ -307,15 +288,7 @@ class Bot:
         """
         resp = requests.post(
             url="https://shopee.co.id/api/v4/cart/update",
-            headers={
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-                "Cookie": self.user.cookie,
-                "if-none-match-": "*",
-                "Referer": "https://shopee.co.id/cart",
-                "User-Agent": self.user.USER_AGENT,
-                "X-Csrftoken": self.user.csrf_token
-            },
+            headers=self.__default_headers(),
             data=dumps({
                 "action_type": 2,
                 "updated_shop_order_ids": [
