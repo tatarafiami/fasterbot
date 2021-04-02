@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List
+from typing      import List
 
 
 @dataclass
@@ -17,9 +17,8 @@ class Model:
 
 
 @dataclass
-class FlashSaleInfo:
+class UpcomingFlashSaleInfo:
     end_time: int
-    flash_sale_stock: int
     item_id: int
     model_ids: list
     name: str
@@ -50,12 +49,11 @@ class Item:
     shop_location: str
 
     # prepared for the future (if needed)
-    flash_sale: FlashSaleInfo
+    upcoming_flash_sale: UpcomingFlashSaleInfo
     add_on_deal_info: AddOnDealInfo
     price_min: int
     price_max: int
     stock: int
-    is_flash_sale: bool
 
     @staticmethod
     def get_price(price) -> int:
