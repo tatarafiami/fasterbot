@@ -1,8 +1,10 @@
-from bot import Bot
-from user import User
+from bot          import Bot
+from user         import User
 from checkoutdata import PaymentInfo, PaymentChannel, PaymentChannelOptionInfo
-from datetime import datetime
-from colorama import Fore, Style, init
+from datetime     import datetime
+from colorama     import Fore, Style, init
+from time         import sleep
+from datetime     import datetime
 import os
 
 
@@ -65,11 +67,11 @@ if selected_payment_channel is PaymentChannel.TRANSFER_BANK or \
         print(str(index) + '.', option_info.name)
     selected_option_info = options_info[int(input(INPUT + " Pilihan: "))]
 
-input(PROMPT + " Tunggu 1 menit sebelum Flash Sale tiba, lalu tekan Enter")
-
-print(INFO, "Menunggu Flash Sale tiba...")
-while not item.is_flash_sale:
-    item = bot.fetch_item(item.item_id, item.shop_id)
+if item.upcoming_flash_sale is not None:
+    flash_sale_start = datetime.fromtimestamp(item.upcoming_flash_sale.start_time)
+    print(INFO, "Waktu Flash Sale: ", flash_sale_start.strftime("%H:%M:%S"))
+    print(INFO, "Menunggu Flash Sale...", end='\r')
+    sleep((datetime.fromtimestamp(item.upcoming_flash_sale.start_time) - datetime.now()).total_seconds())
 print(INFO, "Flash Sale telah tiba")
 start = datetime.now()
 print(INFO, "Menambah item ke cart...")
