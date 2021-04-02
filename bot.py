@@ -1,9 +1,9 @@
 from urllib.parse import urlencode
-from item import *
-from user import User
-from json import dumps
-from re import search
-from time import time
+from item         import *
+from user         import User
+from json         import dumps
+from re           import search
+from time         import time
 from checkoutdata import *
 import requests
 
@@ -68,19 +68,18 @@ class Bot:
             price_before_discount=item_data["price_before_discount"],
             brand=item_data["brand"],
             shop_location=item_data["shop_location"],
-            flash_sale=FlashSaleInfo(
-                end_time=item_data["flash_sale"]["end_time"],
-                flash_sale_stock=item_data["flash_sale"]["flash_sale_stock"],
-                item_id=item_data["flash_sale"]["itemid"],
-                model_ids=item_data["flash_sale"]["modelids"],
-                name=item_data["flash_sale"]["name"],
-                price=item_data["flash_sale"]["price"],
-                price_before_discount=item_data["flash_sale"]["price_before_discount"],
-                promotion_id=item_data["flash_sale"]["promotionid"],
-                shop_id=item_data["flash_sale"]["shopid"],
-                start_time=item_data["flash_sale"]["start_time"],
-                stock=item_data["flash_sale"]["stock"]
-            ) if item_data["flash_sale"] is not None else None,
+            upcoming_flash_sale=UpcomingFlashSaleInfo(
+                end_time=item_data["upcoming_flash_sale"]["end_time"],
+                item_id=item_data["upcoming_flash_sale"]["itemid"],
+                model_ids=item_data["upcoming_flash_sale"]["modelids"],
+                name=item_data["upcoming_flash_sale"]["name"],
+                price=item_data["upcoming_flash_sale"]["price"],
+                price_before_discount=item_data["upcoming_flash_sale"]["price_before_discount"],
+                promotion_id=item_data["upcoming_flash_sale"]["promotionid"],
+                shop_id=item_data["upcoming_flash_sale"]["shopid"],
+                start_time=item_data["upcoming_flash_sale"]["start_time"],
+                stock=item_data["upcoming_flash_sale"]["stock"]
+            ) if item_data["upcoming_flash_sale"] is not None else None,
             add_on_deal_info=AddOnDealInfo(
                 add_on_deal_id=item_data["add_on_deal_info"]["add_on_deal_id"],
                 add_on_deal_label=item_data["add_on_deal_info"]["add_on_deal_label"],
@@ -88,8 +87,7 @@ class Bot:
             ) if item_data["add_on_deal_info"] is not None else AddOnDealInfo(),
             price_min=item_data["price_min"],
             price_max=item_data["price_max"],
-            stock=item_data["stock"],
-            is_flash_sale=item_data["flash_sale"] is not None
+            stock=item_data["stock"]
         )
 
     def add_to_cart(self, item: Item, model_index: int) -> CartItem:
