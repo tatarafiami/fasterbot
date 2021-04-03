@@ -30,3 +30,6 @@ jalankan scriptnya dengan perintah berikut
 ```
 python main.py
 ```
+# Tambahan
+untuk speed tergantung koneksi internet masing masing.
+dan tidak menjamin 100% dapat
