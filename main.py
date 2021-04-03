@@ -67,14 +67,15 @@ if selected_payment_channel is PaymentChannel.TRANSFER_BANK or \
         print(str(index) + '.', option_info.name)
     selected_option_info = options_info[int(input(INPUT + " Pilihan: "))]
 
-if item.upcoming_flash_sale is not None:
-    flash_sale_start = datetime.fromtimestamp(item.upcoming_flash_sale.start_time)
-    print(INFO, "Waktu Flash Sale: ", flash_sale_start.strftime("%H:%M:%S"))
-    print(INFO, "Menunggu Flash Sale...", end='\r')
-    sleep((datetime.fromtimestamp(item.upcoming_flash_sale.start_time) - datetime.now()).total_seconds())
-else:
-    print(PROMPT, "Flash Sale telah Lewat!")
-    exit(1)
+if not item.is_flash_sale:
+    if item.upcoming_flash_sale is not None:
+        flash_sale_start = datetime.fromtimestamp(item.upcoming_flash_sale.start_time)
+        print(INFO, "Waktu Flash Sale: ", flash_sale_start.strftime("%H:%M:%S"))
+        print(INFO, "Menunggu Flash Sale...", end='\r')
+        sleep((datetime.fromtimestamp(item.upcoming_flash_sale.start_time) - datetime.now()).total_seconds())
+    else:
+        print(PROMPT, "Flash Sale telah Lewat!")
+        exit(1)
 print(INFO, "Flash Sale telah tiba")
 start = datetime.now()
 print(INFO, "Menambah item ke cart...")
