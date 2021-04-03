@@ -64,7 +64,8 @@ if selected_payment_channel is PaymentChannel.TRANSFER_BANK or \
                         PaymentChannel.TRANSFER_BANK else 7:None if selected_payment_channel is
                         PaymentChannel.AKULAKU else 7]))
     for index, option_info in options_info.items():
-        print(str(index) + '.', option_info.name)
+        print(Fore.GREEN + '[' + str(index) + ']' + Fore.BLUE, option_info.name)
+    print()
     selected_option_info = options_info[int(input(INPUT + " Pilihan: "))]
 
 if not item.is_flash_sale:
