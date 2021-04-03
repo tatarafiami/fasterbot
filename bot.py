@@ -91,7 +91,8 @@ class Bot:
             ) if item_data["add_on_deal_info"] is not None else AddOnDealInfo(),
             price_min=item_data["price_min"],
             price_max=item_data["price_max"],
-            stock=item_data["stock"]
+            stock=item_data["stock"],
+            is_flash_sale=item_data["flash_sale"] is not None
         )
 
     def add_to_cart(self, item: Item, model_index: int) -> CartItem:
