@@ -54,6 +54,7 @@ class Item:
     price_min: int
     price_max: int
     stock: int
+    is_flash_sale: bool
 
     @staticmethod
     def get_price(price) -> int:
