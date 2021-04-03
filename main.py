@@ -72,6 +72,9 @@ if item.upcoming_flash_sale is not None:
     print(INFO, "Waktu Flash Sale: ", flash_sale_start.strftime("%H:%M:%S"))
     print(INFO, "Menunggu Flash Sale...", end='\r')
     sleep((datetime.fromtimestamp(item.upcoming_flash_sale.start_time) - datetime.now()).total_seconds())
+else:
+    print(PROMPT, "Flash Sale telah Lewat!")\
+    exit(1)
 print(INFO, "Flash Sale telah tiba")
 start = datetime.now()
 print(INFO, "Menambah item ke cart...")
